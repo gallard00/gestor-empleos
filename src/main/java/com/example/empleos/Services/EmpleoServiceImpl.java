@@ -5,7 +5,7 @@ package com.example.empleos.Services;
     import com.example.empleos.Dtos.EmpleoRequest;
     import com.example.empleos.Dtos.EmpleoResponse;
     import com.example.empleos.Mappers.EmpleoMapper;
-    import com.example.empleos.Services.EmpleoService;
+    import com.example.empleos.Mappers.CandidatoMapper;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Service;
 
@@ -16,6 +16,9 @@ package com.example.empleos.Services;
 public class EmpleoServiceImpl implements EmpleoService {
     @Autowired
     private EmpleoRepository empleoRepository;
+
+    @Autowired
+    private CandidatoMapper candidatoMapper;
 
     @Override
     public EmpleoResponse createEmpleo(EmpleoRequest empleoRequest) {
@@ -55,4 +58,5 @@ public class EmpleoServiceImpl implements EmpleoService {
     public void deleteEmpleo(Long id) {
         empleoRepository.deleteById(id);
     }
+
 }

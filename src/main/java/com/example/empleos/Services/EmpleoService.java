@@ -11,4 +11,5 @@ public interface EmpleoService {
     EmpleoResponse getEmpleoById(Long id);
     EmpleoResponse updateEmpleo(Long id, EmpleoRequest empleoRequest);
     void deleteEmpleo(Long id);
+
 }
