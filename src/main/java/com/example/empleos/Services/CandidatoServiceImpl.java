@@ -51,7 +51,13 @@ public class CandidatoServiceImpl implements CandidatoService {
     }
 
     @Override
-    public void deleteCandidato(Long id) {
-        candidatoRepository.deleteById(id);
+    public String deleteCandidato(Long id) {
+
+        Candidato candidato = candidatoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato no encontrado"));
+
+        candidatoRepository.delete(candidato);
+
+        return "Candidato eliminado: ";
     }
 }

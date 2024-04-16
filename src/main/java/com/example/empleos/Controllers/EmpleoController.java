@@ -40,8 +40,8 @@ public class EmpleoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmpleo(@PathVariable Long id) {
-        empleoService.deleteEmpleo(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> deleteEmpleo(@PathVariable Long id) {
+        String result = empleoService.deleteEmpleo(id);
+        return ResponseEntity.ok(result);
     }
 }

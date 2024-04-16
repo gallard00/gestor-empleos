@@ -10,5 +10,5 @@ public interface CandidatoService {
     List<CandidatoResponse> getAllCandidatos();
     CandidatoResponse getCandidatoById(Long id);
     CandidatoResponse updateCandidato(Long id, CandidatoRequest candidatoRequest);
-    void deleteCandidato(Long id);
+    String deleteCandidato(Long id);
 }

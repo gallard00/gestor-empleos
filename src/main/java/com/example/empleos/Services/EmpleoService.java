@@ -10,6 +10,6 @@ public interface EmpleoService {
     List<EmpleoResponse> getAllEmpleos();
     EmpleoResponse getEmpleoById(Long id);
     EmpleoResponse updateEmpleo(Long id, EmpleoRequest empleoRequest);
-    void deleteEmpleo(Long id);
+    String deleteEmpleo(Long id);
 
 }

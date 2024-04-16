@@ -51,12 +51,18 @@ public class EmpleoServiceImpl implements EmpleoService {
             empleoRepository.save(updatedEmpleo);
             return EmpleoMapper.empleoToEmpleoResponse(updatedEmpleo);
         }
-        return null; // or throw an exception as per your error handling policy
+        return null; // o lanzar una excepción
     }
 
     @Override
-    public void deleteEmpleo(Long id) {
-        empleoRepository.deleteById(id);
+    public String deleteEmpleo(Long id) {
+        Empleo empleo = empleoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Empleo no encontrado"));
+
+        empleoRepository.delete(empleo);
+
+        return "Empleo eliminado: ";
+
     }
 
 }
