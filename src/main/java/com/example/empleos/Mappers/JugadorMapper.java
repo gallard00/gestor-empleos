@@ -13,30 +13,28 @@ public class JugadorMapper {
     @Autowired
     private EquipoService equipoService;
 
-    public Jugador jugadorRequestToJugador (JugadorRequest jugadorRequest) {
+    public Jugador toModel (JugadorRequest request) {
         Jugador jugador = new Jugador();
-
-        jugador.setNombre(jugadorRequest.getNombre());
-        jugador.setApellido(jugadorRequest.getApellido());
-        jugador.setPosicion(jugadorRequest.getPosicion());
-
-        Equipo equipo = equipoService.getEquipoById(jugadorRequest.getEquipoId());
-
-        jugador.setEquipo(equipo);
-
+        jugador.setNombre(request.getNombre());
+        jugador.setApellido(request.getApellido());
+        jugador.setPosicion(request.getPosicion());
+        if (request.getEquipoId() != null) {
+            Equipo equipo = equipoService.getEquipoEntityById(request.getEquipoId());
+            jugador.setEquipo(equipo);
+        }
         return jugador;
 
     }
 
-    public JugadorResponse jugadorToJugadorResponse (Jugador jugador) {
-        JugadorResponse jugadorResponse = new JugadorResponse();
-
-        jugadorResponse.setId(jugador.getId());
-        jugadorResponse.setNombre(jugador.getNombre());
-        jugadorResponse.setApellido(jugador.getApellido());
-        jugadorResponse.setPosicion(jugador.getPosicion());
-        jugadorResponse.setEquipoId(jugador.getEquipo().getId());
-
-        return jugadorResponse;
+    public JugadorResponse toResponse (Jugador jugador) {
+        JugadorResponse response = new JugadorResponse();
+        response.setId(jugador.getId());
+        response.setNombre(jugador.getNombre());
+        response.setApellido(jugador.getApellido());
+        response.setPosicion(jugador.getPosicion());
+        if (jugador.getEquipo() != null) {
+            response.setEquipoId(jugador.getEquipo().getId());
+        }
+        return response;
     }
 }

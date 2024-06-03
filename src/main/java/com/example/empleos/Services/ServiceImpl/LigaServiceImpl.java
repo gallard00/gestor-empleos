@@ -4,6 +4,7 @@ import com.example.empleos.Dtos.*;
 import com.example.empleos.Exceptions.ResourceNotFoundException;
 import com.example.empleos.Mappers.LigaMapper;
 import com.example.empleos.Models.Liga;
+import com.example.empleos.Models.Partido;
 import com.example.empleos.Repositories.LigaRepository;
 import com.example.empleos.Services.LigaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,39 +22,45 @@ public class LigaServiceImpl implements LigaService {
     private LigaMapper ligaMapper;
 
     @Override
-    public List<LigaResponse> getAllLigas() {
-        return ligaRepository.findAll().stream()
-                .map(ligaMapper::ligaToLigaResponse)
-                .collect(Collectors.toList());
+    public LigaResponse createLiga(LigaRequest request) {
+        Liga liga = ligaMapper.toModel(request);
+        liga = ligaRepository.save(liga);
+        return ligaMapper.toResponse(liga);
     }
 
     @Override
     public LigaResponse getLigaById(Long id) {
         Liga liga = ligaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Liga not found with id: " + id));
-        return ligaMapper.ligaToLigaResponse(liga);
+                .orElseThrow(() -> new RuntimeException("Liga no encontrada"));
+        return ligaMapper.toResponse(liga);
     }
 
     @Override
-    public LigaResponse createLiga(LigaRequest ligaRequest) {
-        Liga liga = ligaMapper.ligaRequestToLiga(ligaRequest);
-        liga = ligaRepository.save(liga);
-        return ligaMapper.ligaToLigaResponse(liga);
+    public Liga getLigaEntityById(Long id) {  // Método adicional
+        return ligaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Liga no encontrado"));
     }
 
     @Override
-    public LigaResponse updateLiga(Long id, LigaRequest ligaRequest) {
+    public List<LigaResponse> getAllLigas() {
+        return ligaRepository.findAll().stream()
+                .map(ligaMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public LigaResponse updateLiga(Long id, LigaRequest request) {
         Liga liga = ligaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Liga not found with id: " + id));
-        liga.setNombre(ligaRequest.getNombre());
+                .orElseThrow(() -> new RuntimeException("Liga no encontrada"));
+        liga.setNombre(request.getNombre());
         liga = ligaRepository.save(liga);
-        return ligaMapper.ligaToLigaResponse(liga);
+        return ligaMapper.toResponse(liga);
     }
 
     @Override
     public void deleteLiga(Long id) {
         Liga liga = ligaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Liga not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Liga no encontrada"));
         ligaRepository.delete(liga);
     }
 }

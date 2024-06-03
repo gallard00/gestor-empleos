@@ -2,14 +2,16 @@ package com.example.empleos.Services;
 
 import com.example.empleos.Dtos.JugadorRequest;
 import com.example.empleos.Dtos.JugadorResponse;
+import com.example.empleos.Models.Equipo;
 import com.example.empleos.Models.Jugador;
 
 import java.util.List;
 
 public interface JugadorService {
-    List<JugadorResponse> getAllJugadores();
+    JugadorResponse createJugador(JugadorRequest request);
     JugadorResponse getJugadorById(Long id);
-    JugadorResponse createJugador(JugadorRequest jugadorRequest);
-    JugadorResponse updateJugador(Long id, JugadorRequest jugadorRequest);
+    Jugador getJugadorEntityById(Long id);
+    List<JugadorResponse> getAllJugadores();
+    JugadorResponse updateJugador(Long id, JugadorRequest request);
     void deleteJugador(Long id);
 }

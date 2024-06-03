@@ -6,16 +6,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LigaMapper {
-    public Liga ligaRequestToLiga(LigaRequest ligaRequest) {
+
+    public Liga toModel(LigaRequest request) {
         Liga liga = new Liga();
-        liga.setNombre(ligaRequest.getNombre());
+        liga.setNombre(request.getNombre());
         return liga;
     }
 
-    public LigaResponse ligaToLigaResponse(Liga liga) {
-        LigaResponse ligaResponse = new LigaResponse();
-        ligaResponse.setId(liga.getId());
-        ligaResponse.setNombre(liga.getNombre());
-        return ligaResponse;
+    public LigaResponse toResponse(Liga liga) {
+        LigaResponse response = new LigaResponse();
+        response.setId(liga.getId());
+        response.setNombre(liga.getNombre());
+        return response;
     }
 }

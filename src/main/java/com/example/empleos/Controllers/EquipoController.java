@@ -15,29 +15,29 @@ public class EquipoController {
     @Autowired
     private EquipoService equipoService;
 
-    @GetMapping
-    public List<EquipoResponse> getAllEquipos() {
-        return equipoService.getAllEquipos();
+    @PostMapping
+    public ResponseEntity<EquipoResponse> createEquipo(@RequestBody EquipoRequest request) {
+        return ResponseEntity.ok(equipoService.createEquipo(request));
     }
 
     @GetMapping("/{id}")
-    public EquipoResponse getEquipoById(@PathVariable Long id) {
-        return equipoService.getEquipoById(id);
+    public ResponseEntity<EquipoResponse> getEquipoById(@PathVariable Long id) {
+        return ResponseEntity.ok(equipoService.getEquipoById(id));
     }
 
-    @PostMapping
-    public EquipoResponse createEquipo(@RequestBody EquipoRequest equipoRequest) {
-        return equipoService.createEquipo(equipoRequest);
+    @GetMapping
+    public ResponseEntity<List<EquipoResponse>> getAllEquipos() {
+        return ResponseEntity.ok(equipoService.getAllEquipos());
     }
 
     @PutMapping("/{id}")
-    public EquipoResponse updateEquipo(@PathVariable Long id, @RequestBody EquipoRequest equipoRequest) {
-        return equipoService.updateEquipo(id, equipoRequest);
+    public ResponseEntity<EquipoResponse> updateEquipo(@PathVariable Long id, @RequestBody EquipoRequest request) {
+        return ResponseEntity.ok(equipoService.updateEquipo(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEquipo(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEquipo(@PathVariable Long id) {
         equipoService.deleteEquipo(id);
-        return ResponseEntity.ok("Equipo eliminado con ID: " + id);
+        return ResponseEntity.noContent().build();
     }
 }

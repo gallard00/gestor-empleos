@@ -15,5 +15,5 @@ public class EquipoResponse {
     private int golesContra;
     private int diferencia;
     private int puntos;
-    private Set<LigaResponse> liga;
+    private Long ligaId;
 }

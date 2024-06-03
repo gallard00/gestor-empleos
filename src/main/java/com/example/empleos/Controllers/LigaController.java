@@ -15,29 +15,29 @@ public class LigaController {
     @Autowired
     private LigaService ligaService;
 
-    @GetMapping
-    public List<LigaResponse> getAllLigas() {
-        return ligaService.getAllLigas();
+    @PostMapping
+    public ResponseEntity<LigaResponse> createLiga(@RequestBody LigaRequest request) {
+        return ResponseEntity.ok(ligaService.createLiga(request));
     }
 
     @GetMapping("/{id}")
-    public LigaResponse getLigaById(@PathVariable Long id) {
-        return ligaService.getLigaById(id);
+    public ResponseEntity<LigaResponse> getLigaById(@PathVariable Long id) {
+        return ResponseEntity.ok(ligaService.getLigaById(id));
     }
 
-    @PostMapping
-    public LigaResponse createLiga(@RequestBody LigaRequest ligaRequest) {
-        return ligaService.createLiga(ligaRequest);
+    @GetMapping
+    public ResponseEntity<List<LigaResponse>> getAllLigas() {
+        return ResponseEntity.ok(ligaService.getAllLigas());
     }
 
     @PutMapping("/{id}")
-    public LigaResponse updateLiga(@PathVariable Long id, @RequestBody LigaRequest ligaRequest) {
-        return ligaService.updateLiga(id, ligaRequest);
+    public ResponseEntity<LigaResponse> updateLiga(@PathVariable Long id, @RequestBody LigaRequest request) {
+        return ResponseEntity.ok(ligaService.updateLiga(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteLiga(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteLiga(@PathVariable Long id) {
         ligaService.deleteLiga(id);
-        return ResponseEntity.ok("Liga eliminada con ID: " + id);
+        return ResponseEntity.noContent().build();
     }
 }

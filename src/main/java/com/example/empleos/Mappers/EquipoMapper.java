@@ -15,42 +15,40 @@ public class EquipoMapper {
     @Autowired
     private LigaService ligaService;
 
-    public Equipo equipoRequestToEquipo(EquipoRequest equipoRequest) {
+    public Equipo toModel(EquipoRequest request) {
         Equipo equipo = new Equipo();
-
-        equipo.setNombre(equipoRequest.getNombre());
-        equipo.setPartidos(equipoRequest.getPartidos());
-        equipo.setGanados(equipoRequest.getGanados());
-        equipo.setEmpatados(equipoRequest.getEmpatados());
-        equipo.setPerdidos(equipoRequest.getPerdidos());
-        equipo.setGolesFavor(equipoRequest.getGolesFavor());
-        equipo.setGolesContra(equipoRequest.getGolesContra());
-        equipo.setDiferencia(equipoRequest.getDiferencia());
-        equipo.setPuntos(equipoRequest.getPuntos());
-
-        Liga liga = ligaService.getLigaById(equipoRequest.getLigaId());
-
-        equipo.setLiga(liga);
-
+        equipo.setNombre(request.getNombre());
+        equipo.setPartidos(request.getPartidos());
+        equipo.setGanados(request.getGanados());
+        equipo.setEmpatados(request.getEmpatados());
+        equipo.setPerdidos(request.getPerdidos());
+        equipo.setGolesFavor(request.getGolesFavor());
+        equipo.setGolesContra(request.getGolesContra());
+        equipo.setDiferencia(request.getDiferencia());
+        equipo.setPuntos(request.getPuntos());
+        if (request.getLigaId() != null) {
+            Liga liga = ligaService.getLigaEntityById(request.getLigaId());
+            equipo.setLiga(liga);
+        }
         return equipo;
     }
 
-    public EquipoResponse equipoToEquipoResponse(Equipo equipo) {
-
-        EquipoResponse equipoResponse = new EquipoResponse();
-
-        equipoResponse.setId(equipo.getId());
-        equipoResponse.setNombre(equipo.getNombre());
-        equipoResponse.setPartidos(equipo.getPartidos());
-        equipoResponse.setGanados(equipo.getGanados());
-        equipoResponse.setEmpatados(equipo.getEmpatados());
-        equipoResponse.setPerdidos(equipo.getPerdidos());
-        equipoResponse.setDiferencia(equipo.getDiferencia());
-        equipoResponse.setPuntos(equipo.getPuntos());
-        equipoResponse.setLigaId(equipo.getLiga().getId());
-
-        return equipoResponse;
-
+    public EquipoResponse toResponse(Equipo equipo) {
+        EquipoResponse response = new EquipoResponse();
+        response.setId(equipo.getId());
+        response.setNombre(equipo.getNombre());
+        response.setPartidos(equipo.getPartidos());
+        response.setGanados(equipo.getGanados());
+        response.setEmpatados(equipo.getEmpatados());
+        response.setPerdidos(equipo.getPerdidos());
+        response.setGolesFavor(equipo.getGolesFavor());
+        response.setGolesContra(equipo.getGolesContra());
+        response.setDiferencia(equipo.getDiferencia());
+        response.setPuntos(equipo.getPuntos());
+        if (equipo.getLiga() != null) {
+            response.setLigaId(equipo.getLiga().getId());
+        }
+        return response;
     }
 
 }

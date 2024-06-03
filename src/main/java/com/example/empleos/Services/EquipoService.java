@@ -7,9 +7,10 @@ import com.example.empleos.Models.Equipo;
 import java.util.List;
 
 public interface EquipoService {
+    EquipoResponse createEquipo(EquipoRequest request);
     EquipoResponse getEquipoById(Long id);
+    Equipo getEquipoEntityById(Long id);
     List<EquipoResponse> getAllEquipos();
-    EquipoResponse createEquipo(EquipoRequest equipoRequest);
-    EquipoResponse updateEquipo(Long id, EquipoRequest equipoRequest);
+    EquipoResponse updateEquipo(Long id, EquipoRequest request);
     void deleteEquipo(Long id);
 }

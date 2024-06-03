@@ -16,16 +16,15 @@ public class PartidoMapper {
     @Autowired
     private LigaService ligaService;
 
-    public Partido partidoRequestToPartido(PartidoRequest partidoRequest) {
+    public Partido toModel(PartidoRequest request) {
         Partido partido = new Partido();
-        partido.setFecha(partidoRequest.getFecha());
-        partido.setGolesLocal(partidoRequest.getGolesLocal());
-        partido.setGolesVisitante(partidoRequest.getGolesVisitante());
+        partido.setGolesLocal(request.getGolesLocal());
+        partido.setGolesVisitante(request.getGolesVisitante());
+        partido.setFecha(request.getFecha());
 
-        // Set the associated entities
-        Equipo equipoLocal = equipoService.getEquipoById(partidoRequest.getEquipoLocalId());
-        Equipo equipoVisitante = equipoService.getEquipoById(partidoRequest.getEquipoVisitanteId());
-        Liga liga = ligaService.getLigaById(partidoRequest.getLigaId());
+        Equipo equipoLocal = equipoService.getEquipoEntityById(request.getEquipoLocalId());
+        Equipo equipoVisitante = equipoService.getEquipoEntityById(request.getEquipoVisitanteId());
+        Liga liga = ligaService.getLigaEntityById(request.getLigaId());
 
         partido.setEquipoLocal(equipoLocal);
         partido.setEquipoVisitante(equipoVisitante);
@@ -34,15 +33,23 @@ public class PartidoMapper {
         return partido;
     }
 
-    public PartidoResponse partidoToPartidoResponse(Partido partido) {
-        PartidoResponse partidoResponse = new PartidoResponse();
-        partidoResponse.setId(partido.getId());
-        partidoResponse.setFecha(partido.getFecha());
-        partidoResponse.setEquipoLocalId(partido.getEquipoLocal().getId());
-        partidoResponse.setEquipoVisitanteId(partido.getEquipoVisitante().getId());
-        partidoResponse.setGolesLocal(partido.getGolesLocal());
-        partidoResponse.setGolesVisitante(partido.getGolesVisitante());
-        partidoResponse.setLigaId(partido.getLiga().getId());
-        return partidoResponse;
+    public PartidoResponse toResponse(Partido partido) {
+        PartidoResponse response = new PartidoResponse();
+        response.setId(partido.getId());
+        response.setGolesLocal(partido.getGolesLocal());
+        response.setGolesVisitante(partido.getGolesVisitante());
+        response.setFecha(partido.getFecha());
+
+        if (partido.getEquipoLocal() != null) {
+            response.setEquipoLocalId(partido.getEquipoLocal().getId());
+        }
+        if (partido.getEquipoVisitante() != null) {
+            response.setEquipoVisitanteId(partido.getEquipoVisitante().getId());
+        }
+        if (partido.getLiga() != null) {
+            response.setLigaId(partido.getLiga().getId());
+        }
+
+        return response;
     }
 }

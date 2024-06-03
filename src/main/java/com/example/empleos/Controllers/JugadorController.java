@@ -15,29 +15,29 @@ public class JugadorController {
     @Autowired
     private JugadorService jugadorService;
 
-    @GetMapping
-    public List<JugadorResponse> getAllJugadores() {
-        return jugadorService.getAllJugadores();
+    @PostMapping
+    public ResponseEntity<JugadorResponse> createJugador(@RequestBody JugadorRequest request) {
+        return ResponseEntity.ok(jugadorService.createJugador(request));
     }
 
     @GetMapping("/{id}")
-    public JugadorResponse getJugadorById(@PathVariable Long id) {
-        return jugadorService.getJugadorById(id);
+    public ResponseEntity<JugadorResponse> getJugadorById(@PathVariable Long id) {
+        return ResponseEntity.ok(jugadorService.getJugadorById(id));
     }
 
-    @PostMapping
-    public JugadorResponse createJugador(@RequestBody JugadorRequest jugadorRequest) {
-        return jugadorService.createJugador(jugadorRequest);
+    @GetMapping
+    public ResponseEntity<List<JugadorResponse>> getAllJugadores() {
+        return ResponseEntity.ok(jugadorService.getAllJugadores());
     }
 
     @PutMapping("/{id}")
-    public JugadorResponse updateJugador(@PathVariable Long id, @RequestBody JugadorRequest jugadorRequest) {
-        return jugadorService.updateJugador(id, jugadorRequest);
+    public ResponseEntity<JugadorResponse> updateJugador(@PathVariable Long id, @RequestBody JugadorRequest request) {
+        return ResponseEntity.ok(jugadorService.updateJugador(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteJugador(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteJugador(@PathVariable Long id) {
         jugadorService.deleteJugador(id);
-        return ResponseEntity.ok("Jugador eliminado con ID: " + id);
+        return ResponseEntity.noContent().build();
     }
 }

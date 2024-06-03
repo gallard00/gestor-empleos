@@ -16,29 +16,29 @@ public class PartidoController {
     @Autowired
     private PartidoService partidoService;
 
-    @GetMapping
-    public List<PartidoResponse> getAllPartidos(){
-        return partidoService.getAllPartidos();
+    @PostMapping
+    public ResponseEntity<PartidoResponse> createPartido(@RequestBody PartidoRequest request) {
+        return ResponseEntity.ok(partidoService.createPartido(request));
     }
 
     @GetMapping("/{id}")
-    public PartidoResponse getPartidoById(@PathVariable Long id) {
-        return partidoService.getPartidoById(id);
+    public ResponseEntity<PartidoResponse> getPartidoById(@PathVariable Long id) {
+        return ResponseEntity.ok(partidoService.getPartidoById(id));
     }
 
-    @PostMapping
-    public PartidoResponse createPartido(@RequestBody PartidoRequest partidoRequest) {
-        return partidoService.createPartido(partidoRequest);
+    @GetMapping
+    public ResponseEntity<List<PartidoResponse>> getAllPartidos() {
+        return ResponseEntity.ok(partidoService.getAllPartidos());
     }
 
     @PutMapping("/{id}")
-    public PartidoResponse updatePartido(@PathVariable Long id, @RequestBody PartidoRequest partidoRequest) {
-        return partidoService.updatePartido(id, partidoRequest);
+    public ResponseEntity<PartidoResponse> updatePartido(@PathVariable Long id, @RequestBody PartidoRequest request) {
+        return ResponseEntity.ok(partidoService.updatePartido(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePartido(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePartido(@PathVariable Long id) {
         partidoService.deletePartido(id);
-        return ResponseEntity.ok("Partido eliminado con ID: " + id);
+        return ResponseEntity.noContent().build();
     }
 }

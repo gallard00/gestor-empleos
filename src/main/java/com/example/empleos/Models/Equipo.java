@@ -4,6 +4,7 @@ package com.example.empleos.Models;
     import lombok.Setter;
 
     import java.util.HashSet;
+    import java.util.List;
     import java.util.Set;
 
 @Table(name = "equipo")
@@ -26,9 +27,9 @@ public class Equipo {
     private int puntos;
 
     @ManyToOne
-    @JoinColumn(name = "liga_id")
+    @JoinColumn(name = "liga_id", nullable = false)
     private Liga liga;
 
-    @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Jugador> jugadores = new HashSet<>();
+    @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL)
+    private List<Jugador> jugadores;
 }
