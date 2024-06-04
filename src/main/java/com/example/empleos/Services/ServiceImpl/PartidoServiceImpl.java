@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,62 +26,51 @@ public class PartidoServiceImpl implements PartidoService {
     private PartidoRepository partidoRepository;
 
     @Autowired
-    private EquipoService equipoService;
-
-    @Autowired
-    private LigaService ligaService;
-
-    @Autowired
     private PartidoMapper partidoMapper;
+
+    @Autowired
+    private EquipoService equipoService;
 
     @Override
     public PartidoResponse createPartido(PartidoRequest request) {
-        Partido partido = partidoMapper.toModel(request);
+        Partido partido = partidoMapper.partidoRequestToPartido(request);
         partido = partidoRepository.save(partido);
-        return partidoMapper.toResponse(partido);
+        return partidoMapper.partidoToPartidoResponse(partido);
+    }
+
+    @Override
+    public List<PartidoResponse> getAllPartidos() {
+        return partidoRepository.findAll().stream()
+                .map(partidoMapper::partidoToPartidoResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public PartidoResponse getPartidoById(Long id) {
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
-        return partidoMapper.toResponse(partido);
-    }
-
-    @Override
-    public Partido getPartidoEntityById(Long id) {  // Método adicional
-        return partidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
-    }
-
-    @Override
-    public List<PartidoResponse> getAllPartidos() {
-        return partidoRepository.findAll().stream()
-                .map(partidoMapper::toResponse)
-                .collect(Collectors.toList());
+        return partidoMapper.partidoToPartidoResponse(partido);
     }
 
     @Override
     public PartidoResponse updatePartido(Long id, PartidoRequest request) {
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
-        if (request.getEquipoLocalId() != null) {
-            Equipo equipoLocal = equipoService.getEquipoEntityById(request.getEquipoLocalId());
-            partido.setEquipoLocal(equipoLocal);
-        }
-        if (request.getEquipoVisitanteId() != null) {
-            Equipo equipoVisitante = equipoService.getEquipoEntityById(request.getEquipoVisitanteId());
-            partido.setEquipoVisitante(equipoVisitante);
-        }
-        if (request.getLigaId() != null) {
-            Liga liga = ligaService.getLigaEntityById(request.getLigaId());
-            partido.setLiga(liga);
-        }
-        partido.setGolesLocal(request.getGolesLocal());
-        partido.setGolesVisitante(request.getGolesVisitante());
+
         partido.setFecha(request.getFecha());
-        partido = partidoRepository.save(partido);
-        return partidoMapper.toResponse(partido);
+
+        if (request.getEquipoLocalId() != null) {
+            partido.setEquipoLocal(equipoService.findEquipoById(request.getEquipoLocalId())
+                    .orElseThrow(() -> new RuntimeException("Equipo local no encontrado")));
+        }
+
+        if (request.getEquipoVisitanteId() != null) {
+            partido.setEquipoVisitante(equipoService.findEquipoById(request.getEquipoVisitanteId())
+                    .orElseThrow(() -> new RuntimeException("Equipo visitante no encontrado")));
+        }
+
+        partidoRepository.save(partido);
+        return partidoMapper.partidoToPartidoResponse(partido);
     }
 
     @Override
@@ -88,5 +78,10 @@ public class PartidoServiceImpl implements PartidoService {
         Partido partido = partidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
         partidoRepository.delete(partido);
+    }
+
+    @Override
+    public Optional<Partido> findPartidoById(Long id) {
+        return partidoRepository.findById(id);
     }
 }

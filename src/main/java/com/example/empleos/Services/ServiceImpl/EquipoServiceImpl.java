@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,50 +23,46 @@ public class EquipoServiceImpl implements EquipoService {
     private EquipoRepository equipoRepository;
 
     @Autowired
-    private LigaRepository ligaRepository;
+    private EquipoMapper equipoMapper;
 
     @Autowired
-    private EquipoMapper equipoMapper;
+    private LigaService ligaService;
 
     @Override
     public EquipoResponse createEquipo(EquipoRequest request) {
-        Equipo equipo = equipoMapper.toModel(request);
+        Equipo equipo = equipoMapper.equipoRequestToEquipo(request);
         equipo = equipoRepository.save(equipo);
-        return equipoMapper.toResponse(equipo);
+        return equipoMapper.equipoToEquipoResponse(equipo);
+    }
+
+    @Override
+    public List<EquipoResponse> getAllEquipos() {
+        return equipoRepository.findAll().stream()
+                .map(equipoMapper::equipoToEquipoResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public EquipoResponse getEquipoById(Long id) {
         Equipo equipo = equipoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
-        return equipoMapper.toResponse(equipo);
-    }
-
-    @Override
-    public Equipo getEquipoEntityById(Long id) {  // Método adicional
-        return equipoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
-    }
-
-    @Override
-    public List<EquipoResponse> getAllEquipos() {
-        return equipoRepository.findAll().stream()
-                .map(equipoMapper::toResponse)
-                .collect(Collectors.toList());
+        return equipoMapper.equipoToEquipoResponse(equipo);
     }
 
     @Override
     public EquipoResponse updateEquipo(Long id, EquipoRequest request) {
         Equipo equipo = equipoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
+
         equipo.setNombre(request.getNombre());
+
         if (request.getLigaId() != null) {
-            Liga liga = ligaRepository.findById(request.getLigaId())
-                    .orElseThrow(() -> new RuntimeException("Liga no encontrada"));
-            equipo.setLiga(liga);
+            equipo.setLiga(ligaService.findLigaById(request.getLigaId())
+                    .orElseThrow(() -> new RuntimeException("Liga no encontrada")));
         }
-        equipo = equipoRepository.save(equipo);
-        return equipoMapper.toResponse(equipo);
+
+        equipoRepository.save(equipo);
+        return equipoMapper.equipoToEquipoResponse(equipo);
     }
 
     @Override
@@ -73,5 +70,10 @@ public class EquipoServiceImpl implements EquipoService {
         Equipo equipo = equipoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
         equipoRepository.delete(equipo);
+    }
+
+    @Override
+    public Optional<Equipo> findEquipoById(Long id) {
+        return equipoRepository.findById(id);
     }
 }

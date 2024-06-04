@@ -20,14 +20,14 @@ public class EquipoController {
         return ResponseEntity.ok(equipoService.createEquipo(request));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EquipoResponse> getEquipoById(@PathVariable Long id) {
-        return ResponseEntity.ok(equipoService.getEquipoById(id));
-    }
-
     @GetMapping
     public ResponseEntity<List<EquipoResponse>> getAllEquipos() {
         return ResponseEntity.ok(equipoService.getAllEquipos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EquipoResponse> getEquipoById(@PathVariable Long id) {
+        return ResponseEntity.ok(equipoService.getEquipoById(id));
     }
 
     @PutMapping("/{id}")

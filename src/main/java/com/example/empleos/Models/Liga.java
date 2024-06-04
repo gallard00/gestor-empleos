@@ -1,24 +1,25 @@
 package com.example.empleos.Models;
     import jakarta.persistence.*;
-    import lombok.Setter;
-    import lombok.Getter;
+    import lombok.*;
 
-    import java.util.HashSet;
+
     import java.util.List;
-    import java.util.Set;
 
-@Table(name = "liga")
 @Entity
+@Table(name = "liga")
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Liga {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "liga", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "liga")
     private List<Equipo> equipos;
-
 }

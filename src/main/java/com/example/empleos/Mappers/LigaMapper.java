@@ -2,30 +2,29 @@ package com.example.empleos.Mappers;
 
 import com.example.empleos.Dtos.*;
 import com.example.empleos.Models.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class LigaMapper {
 
-    @Autowired
-    private EquipoMapper equipoMapper;
-
-    public Liga toModel(LigaRequest request) {
-        Liga liga = new Liga();
-        liga.setNombre(request.getNombre());
-        return liga;
+    public Liga ligaRequestToLiga(LigaRequest request) {
+        return Liga.builder()
+                .nombre(request.getNombre())
+                .build();
     }
 
-    public LigaResponse toResponse(Liga liga) {
-        LigaResponse response = new LigaResponse();
-        response.setId(liga.getId());
-        response.setNombre(liga.getNombre());
-        response.setEquipos(liga.getEquipos().stream()
-                .map(equipoMapper::toResponse)
-                .collect(Collectors.toSet()));
-        return response;
+    public LigaResponse ligaToLigaResponse(Liga liga) {
+        return LigaResponse.builder()
+                .id(liga.getId())
+                .nombre(liga.getNombre())
+                .equipos(liga.getEquipos().stream()
+                        .map(equipo -> EquipoResponse.builder()
+                                .id(equipo.getId())
+                                .nombre(equipo.getNombre())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
     }
 }

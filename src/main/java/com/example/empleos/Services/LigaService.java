@@ -5,12 +5,13 @@ package com.example.empleos.Services;
     import com.example.empleos.Models.Partido;
 
     import java.util.List;
+    import java.util.Optional;
 
 public interface LigaService {
     LigaResponse createLiga(LigaRequest request);
-    LigaResponse getLigaById(Long id);
-    Liga getLigaEntityById(Long id);
     List<LigaResponse> getAllLigas();
+    LigaResponse getLigaById(Long id);
     LigaResponse updateLiga(Long id, LigaRequest request);
     void deleteLiga(Long id);
+    Optional<Liga> findLigaById(Long id);
 }

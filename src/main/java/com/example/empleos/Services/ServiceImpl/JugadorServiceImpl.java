@@ -11,9 +11,11 @@ import com.example.empleos.Repositories.JugadorRepository;
 import com.example.empleos.Services.EquipoService;
 import com.example.empleos.Services.JugadorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,52 +24,46 @@ public class JugadorServiceImpl implements JugadorService{
     private JugadorRepository jugadorRepository;
 
     @Autowired
-    private EquipoService equipoService;
+    private JugadorMapper jugadorMapper;
 
     @Autowired
-    private JugadorMapper jugadorMapper;
+    private EquipoService equipoService;
 
     @Override
     public JugadorResponse createJugador(JugadorRequest request) {
-        Jugador jugador = jugadorMapper.toModel(request);
+        Jugador jugador = jugadorMapper.jugadorRequestToJugador(request);
         jugador = jugadorRepository.save(jugador);
-        return jugadorMapper.toResponse(jugador);
+        return jugadorMapper.jugadorToJugadorResponse(jugador);
+    }
+
+    @Override
+    public List<JugadorResponse> getAllJugadores() {
+        return jugadorRepository.findAll().stream()
+                .map(jugadorMapper::jugadorToJugadorResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public JugadorResponse getJugadorById(Long id) {
         Jugador jugador = jugadorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
-        return jugadorMapper.toResponse(jugador);
-    }
-
-    @Override
-    public Jugador getJugadorEntityById(Long id) {  // Método adicional
-        return jugadorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
-    }
-
-    @Override
-    public List<JugadorResponse> getAllJugadores() {
-        return jugadorRepository.findAll().stream()
-                .map(jugadorMapper::toResponse)
-                .collect(Collectors.toList());
+        return jugadorMapper.jugadorToJugadorResponse(jugador);
     }
 
     @Override
     public JugadorResponse updateJugador(Long id, JugadorRequest request) {
         Jugador jugador = jugadorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
-        if (request.getEquipoId() != null) {
-            Equipo equipo = equipoService.getEquipoEntityById(request.getEquipoId());
-            jugador.setEquipo(equipo);
-        }
-        jugador.setNombre(request.getNombre());
-        jugador.setApellido(request.getApellido());
-        jugador.setPosicion(request.getPosicion());
 
-        jugador = jugadorRepository.save(jugador);
-        return jugadorMapper.toResponse(jugador);
+        jugador.setNombre(request.getNombre());
+
+        if (request.getEquipoId() != null) {
+            jugador.setEquipo(equipoService.findEquipoById(request.getEquipoId())
+                    .orElseThrow(() -> new RuntimeException("Equipo no encontrado")));
+        }
+
+        jugadorRepository.save(jugador);
+        return jugadorMapper.jugadorToJugadorResponse(jugador);
     }
 
     @Override
@@ -75,5 +71,10 @@ public class JugadorServiceImpl implements JugadorService{
         Jugador jugador = jugadorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
         jugadorRepository.delete(jugador);
+    }
+
+    @Override
+    public Optional<Jugador> findJugadorById(Long id) {
+        return jugadorRepository.findById(id);
     }
 }

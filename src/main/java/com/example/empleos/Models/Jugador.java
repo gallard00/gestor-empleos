@@ -1,22 +1,23 @@
 package com.example.empleos.Models;
     import jakarta.persistence.*;
-    import lombok.Getter;
-    import lombok.Setter;
+    import lombok.*;
 
 @Entity
 @Table(name = "jugador")
-@Setter
+@Builder
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Jugador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    private String nombre;
-    private String apellido;
-    private String posicion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "nombre")
+    private String nombre;
+
+    @ManyToOne
     @JoinColumn(name = "equipo_id", nullable = false)
     private Equipo equipo;
 }

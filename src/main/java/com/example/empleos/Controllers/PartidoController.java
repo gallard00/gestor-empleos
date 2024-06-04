@@ -21,14 +21,14 @@ public class PartidoController {
         return ResponseEntity.ok(partidoService.createPartido(request));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PartidoResponse> getPartidoById(@PathVariable Long id) {
-        return ResponseEntity.ok(partidoService.getPartidoById(id));
-    }
-
     @GetMapping
     public ResponseEntity<List<PartidoResponse>> getAllPartidos() {
         return ResponseEntity.ok(partidoService.getAllPartidos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PartidoResponse> getPartidoById(@PathVariable Long id) {
+        return ResponseEntity.ok(partidoService.getPartidoById(id));
     }
 
     @PutMapping("/{id}")

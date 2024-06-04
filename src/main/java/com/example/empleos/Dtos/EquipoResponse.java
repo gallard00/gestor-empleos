@@ -1,14 +1,14 @@
 package com.example.empleos.Dtos;
+    import lombok.Builder;
     import lombok.Data;
-
-    import java.util.Set;
+    import java.util.List;
 
 @Data
+@Builder
 public class EquipoResponse {
     private Long id;
     private String nombre;
     private LigaResponse liga;
-    private Set<JugadorResponse> jugadores;
-    private Set<PartidoResponse> partidosLocal;
-    private Set<PartidoResponse> partidosVisitante;
+    private List<JugadorResponse> jugadores;
+
 }

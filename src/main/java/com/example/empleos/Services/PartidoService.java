@@ -6,12 +6,13 @@ import com.example.empleos.Models.Jugador;
 import com.example.empleos.Models.Partido;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PartidoService {
     PartidoResponse createPartido(PartidoRequest request);
-    PartidoResponse getPartidoById(Long id);
-    Partido getPartidoEntityById(Long id);
     List<PartidoResponse> getAllPartidos();
+    PartidoResponse getPartidoById(Long id);
     PartidoResponse updatePartido(Long id, PartidoRequest request);
     void deletePartido(Long id);
+    Optional<Partido> findPartidoById(Long id);
 }

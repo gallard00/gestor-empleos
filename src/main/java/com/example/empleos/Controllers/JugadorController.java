@@ -20,14 +20,14 @@ public class JugadorController {
         return ResponseEntity.ok(jugadorService.createJugador(request));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<JugadorResponse> getJugadorById(@PathVariable Long id) {
-        return ResponseEntity.ok(jugadorService.getJugadorById(id));
-    }
-
     @GetMapping
     public ResponseEntity<List<JugadorResponse>> getAllJugadores() {
         return ResponseEntity.ok(jugadorService.getAllJugadores());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<JugadorResponse> getJugadorById(@PathVariable Long id) {
+        return ResponseEntity.ok(jugadorService.getJugadorById(id));
     }
 
     @PutMapping("/{id}")

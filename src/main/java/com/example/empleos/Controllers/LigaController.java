@@ -20,14 +20,14 @@ public class LigaController {
         return ResponseEntity.ok(ligaService.createLiga(request));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<LigaResponse> getLigaById(@PathVariable Long id) {
-        return ResponseEntity.ok(ligaService.getLigaById(id));
-    }
-
     @GetMapping
     public ResponseEntity<List<LigaResponse>> getAllLigas() {
         return ResponseEntity.ok(ligaService.getAllLigas());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LigaResponse> getLigaById(@PathVariable Long id) {
+        return ResponseEntity.ok(ligaService.getLigaById(id));
     }
 
     @PutMapping("/{id}")
