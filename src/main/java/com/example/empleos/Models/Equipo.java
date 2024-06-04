@@ -13,23 +13,21 @@ package com.example.empleos.Models;
 @Setter
 public class Equipo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     private String nombre;
-    private int partidos;
-    private int ganados;
-    private int empatados;
-    private int perdidos;
-    private int golesFavor;
-    private int golesContra;
-    private int diferencia;
-    private int puntos;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "liga_id", nullable = false)
     private Liga liga;
 
     @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL)
-    private List<Jugador> jugadores;
+    private Set<Jugador> jugadores = new HashSet<>();
+
+    @OneToMany(mappedBy = "equipoLocal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Partido> partidosLocal = new HashSet<>();
+
+    @OneToMany(mappedBy = "equipoVisitante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Partido> partidosVisitante = new HashSet<>();
 }

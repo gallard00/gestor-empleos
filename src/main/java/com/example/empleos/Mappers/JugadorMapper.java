@@ -7,8 +7,13 @@ import com.example.empleos.Models.Jugador;
 import com.example.empleos.Models.Liga;
 import com.example.empleos.Services.EquipoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JugadorMapper {
+
+    @Autowired
+    private EquipoMapper equipoMapper;
 
     @Autowired
     private EquipoService equipoService;
@@ -32,9 +37,11 @@ public class JugadorMapper {
         response.setNombre(jugador.getNombre());
         response.setApellido(jugador.getApellido());
         response.setPosicion(jugador.getPosicion());
+
         if (jugador.getEquipo() != null) {
-            response.setEquipoId(jugador.getEquipo().getId());
+            response.setEquipo(equipoMapper.toResponse(jugador.getEquipo()));
         }
+
         return response;
     }
 }

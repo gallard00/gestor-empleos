@@ -5,10 +5,10 @@ package com.example.empleos.Dtos;
 @Data
 public class PartidoResponse {
     private Long id;
-    private Long equipoLocalId;
-    private Long equipoVisitanteId;
+    private EquipoResponse equipoLocal;
+    private EquipoResponse equipoVisitante;
     private int golesLocal;
     private int golesVisitante;
     private Date fecha;
-    private Long ligaId;
+    private LigaResponse liga;
 }

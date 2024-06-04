@@ -59,14 +59,6 @@ public class EquipoServiceImpl implements EquipoService {
         Equipo equipo = equipoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
         equipo.setNombre(request.getNombre());
-        equipo.setPartidos(request.getPartidos());
-        equipo.setGanados(request.getGanados());
-        equipo.setEmpatados(request.getEmpatados());
-        equipo.setPerdidos(request.getPerdidos());
-        equipo.setGolesFavor(request.getGolesFavor());
-        equipo.setGolesContra(request.getGolesContra());
-        equipo.setDiferencia(request.getDiferencia());
-        equipo.setPuntos(request.getPuntos());
         if (request.getLigaId() != null) {
             Liga liga = ligaRepository.findById(request.getLigaId())
                     .orElseThrow(() -> new RuntimeException("Liga no encontrada"));

@@ -11,15 +11,15 @@ package com.example.empleos.Models;
 @Setter
 public class Partido {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipo_local_id")
     private Equipo equipoLocal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipo_visitante_id")
     private Equipo equipoVisitante;
 
@@ -27,7 +27,7 @@ public class Partido {
     private int golesVisitante;
     private Date fecha;
 
-    @ManyToOne
-    @JoinColumn(name = "liga_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "liga_id", nullable = false)
     private Liga liga;
 }

@@ -7,13 +7,8 @@ package com.example.empleos.Dtos;
 public class EquipoResponse {
     private Long id;
     private String nombre;
-    private int partidos;
-    private int ganados;
-    private int empatados;
-    private int perdidos;
-    private int golesFavor;
-    private int golesContra;
-    private int diferencia;
-    private int puntos;
-    private Long ligaId;
+    private LigaResponse liga;
+    private Set<JugadorResponse> jugadores;
+    private Set<PartidoResponse> partidosLocal;
+    private Set<PartidoResponse> partidosVisitante;
 }

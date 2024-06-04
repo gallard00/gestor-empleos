@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 public class PartidoMapper {
 
     @Autowired
+    private EquipoMapper equipoMapper;
+
+    @Autowired
     private EquipoService equipoService;
 
     @Autowired
@@ -41,13 +44,13 @@ public class PartidoMapper {
         response.setFecha(partido.getFecha());
 
         if (partido.getEquipoLocal() != null) {
-            response.setEquipoLocalId(partido.getEquipoLocal().getId());
+            response.setEquipoLocal(equipoMapper.toResponse(partido.getEquipoLocal()));
         }
         if (partido.getEquipoVisitante() != null) {
-            response.setEquipoVisitanteId(partido.getEquipoVisitante().getId());
+            response.setEquipoVisitante(equipoMapper.toResponse(partido.getEquipoVisitante()));
         }
         if (partido.getLiga() != null) {
-            response.setLigaId(partido.getLiga().getId());
+            response.setLiga(ligaService.getLigaById(partido.getLiga().getId()));
         }
 
         return response;

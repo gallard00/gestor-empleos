@@ -9,14 +9,14 @@ package com.example.empleos.Models;
 @Getter
 public class Jugador {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     private String nombre;
     private String apellido;
     private String posicion;
 
-    @ManyToOne
-    @JoinColumn(name = "equipo_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipo_id", nullable = false)
     private Equipo equipo;
 }

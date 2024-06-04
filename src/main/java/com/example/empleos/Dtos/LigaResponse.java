@@ -7,4 +7,5 @@ package com.example.empleos.Dtos;
 public class LigaResponse {
     private Long id;
     private String nombre;
+    private Set<EquipoResponse> equipos;
 }

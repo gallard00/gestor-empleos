@@ -9,8 +9,16 @@ import com.example.empleos.Services.LigaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 public class EquipoMapper {
+
+    @Autowired
+    private JugadorMapper jugadorMapper;
+
+    @Autowired
+    private PartidoMapper partidoMapper;
 
     @Autowired
     private LigaService ligaService;
@@ -18,14 +26,7 @@ public class EquipoMapper {
     public Equipo toModel(EquipoRequest request) {
         Equipo equipo = new Equipo();
         equipo.setNombre(request.getNombre());
-        equipo.setPartidos(request.getPartidos());
-        equipo.setGanados(request.getGanados());
-        equipo.setEmpatados(request.getEmpatados());
-        equipo.setPerdidos(request.getPerdidos());
-        equipo.setGolesFavor(request.getGolesFavor());
-        equipo.setGolesContra(request.getGolesContra());
-        equipo.setDiferencia(request.getDiferencia());
-        equipo.setPuntos(request.getPuntos());
+
         if (request.getLigaId() != null) {
             Liga liga = ligaService.getLigaEntityById(request.getLigaId());
             equipo.setLiga(liga);
@@ -37,17 +38,23 @@ public class EquipoMapper {
         EquipoResponse response = new EquipoResponse();
         response.setId(equipo.getId());
         response.setNombre(equipo.getNombre());
-        response.setPartidos(equipo.getPartidos());
-        response.setGanados(equipo.getGanados());
-        response.setEmpatados(equipo.getEmpatados());
-        response.setPerdidos(equipo.getPerdidos());
-        response.setGolesFavor(equipo.getGolesFavor());
-        response.setGolesContra(equipo.getGolesContra());
-        response.setDiferencia(equipo.getDiferencia());
-        response.setPuntos(equipo.getPuntos());
+
         if (equipo.getLiga() != null) {
-            response.setLigaId(equipo.getLiga().getId());
+            response.setLiga(ligaService.getLigaById(equipo.getLiga().getId()));
         }
+
+        response.setJugadores(equipo.getJugadores().stream()
+                .map(jugadorMapper::toResponse)
+                .collect(Collectors.toSet()));
+
+        response.setPartidosLocal(equipo.getPartidosLocal().stream()
+                .map(partidoMapper::toResponse)
+                .collect(Collectors.toSet()));
+
+        response.setPartidosVisitante(equipo.getPartidosVisitante().stream()
+                .map(partidoMapper::toResponse)
+                .collect(Collectors.toSet()));
+
         return response;
     }
 

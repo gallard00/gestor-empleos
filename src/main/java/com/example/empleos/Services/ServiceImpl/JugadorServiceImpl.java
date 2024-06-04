@@ -65,6 +65,7 @@ public class JugadorServiceImpl implements JugadorService{
         jugador.setNombre(request.getNombre());
         jugador.setApellido(request.getApellido());
         jugador.setPosicion(request.getPosicion());
+
         jugador = jugadorRepository.save(jugador);
         return jugadorMapper.toResponse(jugador);
     }
